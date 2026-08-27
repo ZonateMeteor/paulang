@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pamukkale Language Community</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0c0c14;
+            color: #d4d4e0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0c0c14; }
+        ::-webkit-scrollbar-thumb {
+            background: #3d3d5c;
+            border-radius: 3px;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0); }
+            33% { transform: translate(25px, -20px); }
+            66% { transform: translate(-15px, 15px); }
+        }
+        @keyframes scrollDot {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(10px); opacity: 0.3; }
+        }
+        @keyframes gentlePulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 50;
+            padding: 12px 20px;
+        }
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 24px;
+            border-radius: 16px;
+            background: rgba(20, 20, 35, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+        }
+        .nav-inner.scrolled {
+            background: rgba(12, 12, 20, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .nav-logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: #4a4a6a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-logo-text {
+            color: #e8e8f0;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+        .nav-link {
+            color: #8888a0;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.25s;
+            position: relative;
+        }
+        .nav-link:hover { color: #d4d4e0; }
+        .nav-link.active { color: #a0a0c0; }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #e8e8f0;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(8, 8, 14, 0.98);
+            backdrop-filter: blur(30px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mobile-menu.open { transform: translateX(0); }
+        .mobile-menu-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: none;
+            border: none;
+            color: #e8e8f0;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .mobile-menu a {
+            color: #e8e8f0;
+            text-decoration: none;
+            font-size: 28px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .mobile-menu a:hover { color: #a0a0c0; }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(180deg, #0c0c14 0%, #12121c 50%, #0c0c14 100%);
+        }
+        .hero-canvas {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+        }
+        .hero-orb-1 {
+            top: 5%;
+            left: 5%;
+            width: 400px;
+            height: 400px;
+            background: rgba(60, 60, 100, 0.15);
+            animation: floatOrb 12s ease-in-out infinite;
+        }
+        .hero-orb-2 {
+            bottom: 10%;
+            right: 5%;
+            width: 350px;
+            height: 350px;
+            background: rgba(80, 60, 100, 0.1);
+            animation: floatOrb 14s ease-in-out infinite reverse;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 0 24px;
+            max-width: 800px;
+        }
+
+        .hero-greeting {
+            font-size: clamp(40px, 8vw, 90px);
+            font-weight: 800;
+            color: #e8e8f0;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.5s;
+        }
+        .hero-greeting span {
+            color: #7a7a9a;
+        }
+
+        .hero-sub {
+            font-size: clamp(15px, 2vw, 19px);
+            color: #666680;
+            font-weight: 300;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1.2s;
+        }
+        .hero-sub:last-of-type {
+            color: #555570;
+            font-size: clamp(13px, 1.5vw, 15px);
+            max-width: 520px;
+            margin: 0 auto 40px;
+            animation-delay: 1.6s;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 2s;
+        }
+        .btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: #3d3d5c;
+            color: #e8e8f0;
+        }
+        .btn-primary:hover {
+            background: #4a4a6a;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.03);
+            color: #8888a0;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #a0a0c0;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 2.8s;
+        }
+        .scroll-indicator span {
+            color: #444460;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .scroll-mouse {
+            width: 24px;
+            height: 40px;
+            border: 1.5px solid rgba(100, 100, 130, 0.2);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            padding-top: 6px;
+        }
+        .scroll-dot {
+            width: 3px;
+            height: 6px;
+            background: #555570;
+            border-radius: 2px;
+            animation: scrollDot 2s ease-in-out infinite;
+        }
+
+        /* Sections */
+        .section {
+            position: relative;
+            padding: 100px 24px;
+            overflow: hidden;
+        }
+        .section-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-label {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 50px;
+            color: #666680;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 800;
+            color: #e8e8f0;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+        .section-title span { color: #7a7a9a; }
+        .section-subtitle {
+            font-size: 16px;
+            color: #555570;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.025);
+        }
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: #8888a0;
+            font-size: 18px;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #d4d4e0;
+            margin-bottom: 8px;
+        }
+        .card-text {
+            color: #555570;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* Lang Cards */
+        .lang-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .lang-card {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .lang-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .lang-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .lang-flag {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: inline-block;
+            transition: transform 0.4s ease;
+        }
+        .lang-card:hover .lang-flag {
+            transform: scale(1.1);
+        }
+        .lang-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #e8e8f0;
+            margin-bottom: 8px;
+        }
+        .lang-desc {
+            color: #555570;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .lang-link {
+            color: #7a7a9a;
+            font-weight: 600;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.3s;
+        }
+        .lang-card:hover .lang-link {
+            gap: 10px;
+        }
+
+        /* Info Section */
+        .info-section {
+            background: linear-gradient(180deg, #0c0c14 0%, #101018 50%, #0c0c14 100%);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            text-align: center;
+        }
+        .info-item {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .info-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+        .info-number {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 800;
+            color: #4a4a6a;
+            line-height: 1;
+        }
+        .info-label {
+            color: #555570;
+            font-size: 13px;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        .info-note {
+            color: #3d3d50;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        /* Join Section */
+        .join-section {
+            background: linear-gradient(180deg, #0c0c14 0%, #101018 100%);
+        }
+        .join-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .join-text {
+            font-size: 16px;
+            color: #555570;
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+        .join-text strong {
+            color: #8888a0;
+            font-weight: 600;
+        }
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .social-btn {
+            padding: 14px 28px;
+            border-radius: 14px;
+            color: #e8e8f0;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .social-btn:hover {
+            transform: translateY(-2px);
+        }
+        .social-wa {
+            background: #2d5a3d;
+        }
+        .social-wa:hover { background: #356b48; }
+        .social-ig {
+            background: #5a2d4a;
+        }
+        .social-ig:hover { background: #6b3558; }
+
+        .menu-box {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 24px;
+            display: inline-block;
+        }
+        .menu-box p {
+            color: #444460;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+        .menu-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .menu-link {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            color: #8888a0;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: all 0.3s;
+        }
+        .menu-link:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #a0a0c0;
+        }
+
+        /* Footer */
+        .footer {
+            background: #08080e;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 48px 24px 32px;
+        }
+        .footer-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .footer-top {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background: #3d3d5c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .footer-logo-text {
+            color: #e8e8f0;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .footer-social {
+            display: flex;
+            gap: 8px;
+        }
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444460;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .footer-social a:hover {
+            color: #8888a0;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .credits {
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 24px;
+            text-align: center;
+        }
+        .credits-text {
+            color: #3d3d50;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        .credits-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .credit-name {
+            padding: 6px 16px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            color: #555570;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .credit-name:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #8888a0;
+            transform: translateY(-1px);
+        }
+        .copyright {
+            color: #2a2a3a;
+            font-size: 11px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+            .hero-greeting { font-size: clamp(32px, 10vw, 60px); }
+            .section { padding: 60px 20px; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .lang-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-inner" id="navInner">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <i class="fas fa-language" style="color: #a0a0c0; font-size: 14px;"></i>
+                </div>
+                <span class="nav-logo-text">PLC</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">Ana Sayfa</a>
+                <a href="ispanyolcakaynaklar.html" class="nav-link">İspanyolca</a>
+                <a href="japoncakaynaklar.html" class="nav-link">Japonca</a>
+            </div>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="index.html" onclick="toggleMobileMenu()">Ana Sayfa</a>
+        <a href="ispanyolcakaynaklar.html" onclick="toggleMobileMenu()">İspanyolca Kaynaklar</a>
+        <a href="japoncakaynaklar.html" onclick="toggleMobileMenu()">Japonca Kaynaklar</a>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <canvas class="hero-canvas" id="heroCanvas"></canvas>
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-greeting">Merhaba<span>!</span></h1>
+            <p class="hero-sub">Pamukkale Language Community'ye hoş geldin</p>
+            <p class="hero-sub">Biz Pamukkale Üniversitesi öğrencileriyiz. İspanyolca ve Japonca öğrenmek isteyenler olarak bir araya geldik. Beraber öğreniyor, beraber gelişiyor, beraber vakit geçiriyoruz.</p>
+
+            <div class="hero-buttons">
+                <a href="#neden" class="btn btn-primary">
+                    Keşfet <i class="fas fa-arrow-down" style="font-size: 12px;"></i>
+                </a>
+                <a href="#katil" class="btn btn-secondary">
+                    Topluluğa Katıl
+                </a>
+            </div>
+        </div>
+
+        <div class="scroll-indicator" onclick="scrollTo('neden')">
+            <span>Aşağı</span>
+            <div class="scroll-mouse">
+                <div class="scroll-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us -->
+    <section class="section" id="neden">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="section-label">Neden Biz?</span>
+                <h2 class="section-title">Beraber <span>Öğreniyoruz</span></h2>
+                <p class="section-subtitle">Profesyonel bir kurum değil, öğrenmek isteyen öğrencileriz. İşte aramızda neler var:</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="card-title">Konuşma Pratiği</h3>
+                    <p class="card-text">Grup içerisinde düzenli konuşma pratiği yapma imkanı. Hata yapmak serbest, Burada amacımız öğrenmek!</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3 class="card-title">Paylaşılan Kaynaklar</h3>
+                    <p class="card-text">Üyelerimizin bulup paylaştığı sözlükler, uygulamalar ve içerikler. Hep beraber keşfediyoruz.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3 class="card-title">Etkinlikler</h3>
+                    <p class="card-text"> Düzenli buluşmalar, Seviyemize uygun kitaplar okuma ve kültür sohbetleri. Öğrenirken eğleniyoruz.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="card-title">Kültür Keşfi</h3>
+                    <p class="card-text">Sadece dil değil, İspanyol ve Japon kültürünü de beraber tanıyoruz.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="card-title">Destekleyici Ortam</h3>
+                    <p class="card-text">Yargılamadan, Yargılanmadan; destek görerek öğreniyoruz. Burada hiçbirimiz Profesyonel Eğitici değiliz, yalnızca beraber öğrenen bir grubuz.</p>
+                </div>
+    </section>
+
+    <!-- Languages -->
+    <section class="section" style="background: linear-gradient(180deg, #0c0c14 0%, #101018 100%);">
+        <div class="section-inner">
+            <div class="section-header">
+                <h2 class="section-title">Hangi Dili <span>Öğrenmek</span> İstiyorsun?</h2>
+                <p class="section-subtitle">Kaynaklara göz atmak için bir dil seç</p>
+            </div>
+
+            <div class="lang-grid">
+                <a href="ispanyolcakaynaklar.html" class="lang-card">
+                    <div class="lang-flag">&#127466;&#127480;</div>
+                    <h3 class="lang-title">İspanyolca</h3>
+                    <p class="lang-desc">Dünyanın en yaygın dillerinden birini beraber keşfedelim</p>
+                    <span class="lang-link">
+                        Kaynaklara Bak <i class="fas fa-arrow-right" style="font-size: 11px;"></i>
+                    </span>
+                </a>
+
+                <a href="japoncakaynaklar.html" class="lang-card">
+                    <div class="lang-flag">&#127471;&#127477;</div>
+                    <h3 class="lang-title">Japonca</h3>
+                    <p class="lang-desc">Anime, manga ve Japon kültürünün dilini beraber öğrenelim</p>
+                    <span class="lang-link">
+                        Kaynaklara Bak <i class="fas fa-arrow-right" style="font-size: 11px;"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info -->
+    <section class="section info-section">
+        <div class="section-inner">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-number" id="memberCount">0</div>
+                    <div class="info-label">WhatsApp Grubu Üyesi</div>
+                    <div class="info-note">(Güncel sayı)</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-number">12</div>
+                    <div class="info-label">Düzenlenen Etkinlik</div>
+                    <div class="info-note">(Ve saymaya devam)</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-number">2</div>
+                    <div class="info-label">Aktif Dil</div>
+                    <div class="info-note">(İspanyolca & Japonca)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join -->
+    <section class="section join-section" id="katil">
+        <div class="section-inner">
+            <div class="join-content">
+                <span class="section-label">Katıl</span>
+                <h2 class="section-title">Beraber <span>Öğrenelim</span></h2>
+                <p class="join-text">
+                    <strong>Pamukkale Üniversitesi</strong> öğrencisiysen ve yeni bir dil öğrenmek istiyorsan,  aramıza katıl. 
+                    Profesyonel bir kurum değiliz, sadece öğrenmek isteyen öğrencileriz.
+                </p>
+
+                <div class="social-grid">
+                    <a href="https://chat.whatsapp.com/Lw1EDPBe1IM5M3IVmUqIGk?s=cl&p=a&mlu=4" target="_blank" class="social-btn social-wa">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp Grubuna Katıl
+                    </a>
+                    <a href="https://instagram.com/ORNEK-HESAP" target="_blank" class="social-btn social-ig">
+                        <i class="fab fa-instagram"></i>
+                        Instagram'dan Takip Et
+                    </a>
+                </div>
+
+                <div class="menu-box">
+                    <p>Kaynaklara göz atmak istersen:</p>
+                    <div class="menu-links">
+                        <a href="ispanyolcakaynaklar.html" class="menu-link">
+                            &#127466;&#127480; İspanyolca
+                        </a>
+                        <a href="japoncakaynaklar.html" class="menu-link">
+                            &#127471;&#127477; Japonca
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <div class="footer-logo-icon">
+                        <i class="fas fa-language" style="color: #a0a0c0; font-size: 14px;"></i>
+                    </div>
+                    <span class="footer-logo-text">Pamukkale Language Community</span>
+                </div>
+                <div class="footer-social">
+                    <a href="https://chat.whatsapp.com/ORNEK-LINK" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://instagram.com/ORNEK-HESAP" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="credits">
+                <p class="credits-text">Kurucular:</p>
+                <div class="credits-list">
+                    <span class="credit-name">Almiş</span>
+                    <span class="credit-name">Göğçe</span>
+                    <span class="credit-name">Buhtunnasr</span>
+                </div>
+                <p class="copyright">Pamukkale Üniversitesi öğrencileri tarafından sevgiyle yapıldı. 2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== AUTO-PLAY AMBIENT MUSIC (NO ROOSTER) =====
+        let audioCtx, isPlaying = false;
+        const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63, 440.00, 349.23, 293.66, 392.00];
+        let noteIndex = 0;
+        let noteInterval;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playAmbientNote() {
+            if (!isPlaying || !audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const noteGain = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            osc.connect(filter);
+            filter.connect(noteGain);
+            noteGain.connect(audioCtx.destination);
+
+            osc.type = 'sine';
+            osc.frequency.value = notes[noteIndex];
+            filter.type = 'lowpass';
+            filter.frequency.value = 600;
+            filter.Q.value = 1;
+
+            noteGain.gain.setValueAtTime(0, audioCtx.currentTime);
+            noteGain.gain.linearRampToValueAtTime(0.015, audioCtx.currentTime + 0.6);
+            noteGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.8);
+
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 3);
+
+            noteIndex = (noteIndex + 1) % notes.length;
+        }
+
+        function startMusic() {
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            if (!isPlaying) {
+                isPlaying = true;
+                setTimeout(() => {
+                    playAmbientNote();
+                    noteInterval = setInterval(playAmbientNote, 3500);
+                }, 1000);
+            }
+        }
+
+        function stopMusic() {
+            isPlaying = false;
+            if (noteInterval) {
+                clearInterval(noteInterval);
+                noteInterval = null;
+            }
+            if (audioCtx) {
+                audioCtx.suspend();
+            }
+        }
+
+        // Start on first interaction
+        document.addEventListener('click', startMusic, { once: true });
+        document.addEventListener('scroll', startMusic, { once: true });
+        document.addEventListener('touchstart', startMusic, { once: true });
+
+        // Stop music when tab is hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopMusic();
+            } else {
+                if (audioCtx && audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                    if (isPlaying) {
+                        playAmbientNote();
+                        noteInterval = setInterval(playAmbientNote, 3500);
+                    }
+                }
+            }
+        });
+
+        // ===== MOBILE MENU =====
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        }
+
+        // ===== SCROLL =====
+        function scrollTo(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ===== NAVBAR =====
+        window.addEventListener('scroll', () => {
+            const navInner = document.getElementById('navInner');
+            if (window.pageYOffset > 30) {
+                navInner.classList.add('scrolled');
+            } else {
+                navInner.classList.remove('scrolled');
+            }
+        });
+
+        // ===== SCROLL REVEAL =====
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+        document.querySelectorAll('.card, .lang-card, .info-item').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // ===== MEMBER COUNT =====
+        const ACTUAL_MEMBER_COUNT = 17;
+
+        const memberCounter = document.getElementById('memberCount');
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let current = 0;
+                    const step = ACTUAL_MEMBER_COUNT / 40;
+                    const timer = setInterval(() => {
+                        current += step;
+                        if (current >= ACTUAL_MEMBER_COUNT) {
+                            memberCounter.textContent = ACTUAL_MEMBER_COUNT;
+                            clearInterval(timer);
+                        } else {
+                            memberCounter.textContent = Math.floor(current);
+                        }
+                    }, 40);
+                    countObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        countObserver.observe(memberCounter);
+
+        // ===== PARTICLE CANVAS =====
+        const canvas = document.getElementById('heroCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.3;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.3 + 0.05;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(140, 140, 170, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 60; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(100, 100, 140, ${0.04 * (1 - distance / 100)})`;
+                        ctx.lineWidth = 0.4;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+
+                if (mouse.x != null) {
+                    const dx = particles[i].x - mouse.x;
+                    const dy = particles[i].y - mouse.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(120, 120, 160, ${0.06 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
