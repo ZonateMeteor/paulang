@@ -451,7 +451,7 @@
             .resources-section { padding: 20px 14px 50px; }
         }
     
-        #heroVideoBackground { position:absolute; inset:0 0 auto 0; width:100%; height:45vh; min-height:280px; overflow:hidden; z-index:0; background:#0c0c14; pointer-events:none; opacity:0; transition:opacity 1.2s ease; }
+        #heroVideoBackground { position:absolute; top:0; left:0; width:100%; height:45vh; min-height:280px; overflow:hidden; z-index:0; background:#0c0c14; pointer-events:none; opacity:0; transition:opacity 1.2s ease; }
         #heroVideoBackground.is-playing { opacity:1; }
         #heroVideoBackground iframe { position:absolute; top:50%; left:50%; width:177.78vh; height:100vh; min-width:100%; min-height:56.25vw; transform:translate(-50%,-50%); border:0; pointer-events:none; }
         .hero { position:relative; z-index:1; background:transparent!important; }
@@ -459,28 +459,22 @@
 </style>
 </head>
 <body>
-    <div id="heroVideoBackground" aria-hidden="true">
-        <div id="heroVideoPlaceholder"></div>
-    </div>
+    <div id="heroVideoBackground" aria-hidden="true"><div id="heroVideoPlaceholder"></div></div>
     <script>
       (function () {
-        const container = document.getElementById('heroVideoBackground');
-        let started = false;
-        function startHeroVideo() {
-          if (started) return;
-          started = true;
-          const iframe = document.createElement('iframe');
-          iframe.id = 'heroVideoFrame';
-          iframe.title = '';
-          iframe.tabIndex = -1;
-          iframe.setAttribute('allow', 'autoplay; encrypted-media');
-          iframe.src = 'https://www.youtube.com/embed/e_61wpOOpbM?autoplay=1&mute=0&loop=1&playlist=e_61wpOOpbM&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3';
+        const container=document.getElementById('heroVideoBackground'); let started=false;
+        function startHeroVideo(){
+          if(started) return; started=true;
+          const iframe=document.createElement('iframe');
+          iframe.id='heroVideoFrame'; iframe.title=''; iframe.tabIndex=-1;
+          iframe.setAttribute('allow','autoplay; encrypted-media');
+          iframe.src='https://www.youtube.com/embed/e_61wpOOpbM?autoplay=1&mute=0&loop=1&playlist=e_61wpOOpbM&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3';
           container.replaceChildren(iframe);
-          requestAnimationFrame(() => container.classList.add('is-playing'));
+          requestAnimationFrame(()=>container.classList.add('is-playing'));
         }
-        window.addEventListener('pointerdown', startHeroVideo, { once:true, passive:true });
-        window.addEventListener('touchstart', startHeroVideo, { once:true, passive:true });
-        window.addEventListener('keydown', startHeroVideo, { once:true });
+        window.addEventListener('pointerdown',startHeroVideo,{once:true,passive:true});
+        window.addEventListener('touchstart',startHeroVideo,{once:true,passive:true});
+        window.addEventListener('keydown',startHeroVideo,{once:true});
       })();
     </script>
 
@@ -528,28 +522,18 @@
     </section>
 
     <!-- Filter -->
-    <div class="filter-bar">
-        <div class="filter-inner">
-            <button class="filter-btn active" onclick="filterResources('all', this)">
-                <i class="fas fa-th-large"></i> Tümü
-            </button>
-            <button class="filter-btn" onclick="filterResources('sozluk', this)">
-                <i class="fas fa-book"></i> Sözlükler
-            </button>
-            <button class="filter-btn" onclick="filterResources('uygulama', this)">
-                <i class="fas fa-mobile-alt"></i> Uygulamalar
-            </button>
-            <button class="filter-btn" onclick="filterResources('youtube', this)">
-                <i class="fab fa-youtube"></i> YouTube
-            </button>
-            <button class="filter-btn" onclick="filterResources('podcast', this)">
-                <i class="fas fa-podcast"></i> Podcastler
-            </button>
-            <button class="filter-btn" onclick="filterResources('pdf', this)">
-                <i class="fas fa-file-pdf"></i> PDF
-            </button>
-        </div>
-    </div>
+    <div class="filter-bar"><div class="filter-inner">
+      <button class="filter-btn active" onclick="filterResources('all',this)"><i class="fas fa-th-large"></i> Tümü</button>
+      <button class="filter-btn" onclick="filterResources('sozluk',this)"><i class="fas fa-book"></i> Sözlükler</button>
+      <button class="filter-btn" onclick="filterResources('uygulama',this)"><i class="fas fa-mobile-alt"></i> Uygulamalar</button>
+      <button class="filter-btn" onclick="filterResources('baslangic',this)"><i class="fas fa-seedling"></i> Başlangıç</button>
+      <button class="filter-btn" onclick="filterResources('okuma',this)"><i class="fas fa-book-open"></i> Okuma</button>
+      <button class="filter-btn" onclick="filterResources('sarki',this)"><i class="fas fa-music"></i> Şarkılar</button>
+      <button class="filter-btn" onclick="filterResources('youtube',this)"><i class="fab fa-youtube"></i> YouTube</button>
+      <button class="filter-btn" onclick="filterResources('instagram',this)"><i class="fab fa-instagram"></i> Instagram</button>
+      <button class="filter-btn" onclick="filterResources('podcast',this)"><i class="fas fa-podcast"></i> Dinleme & Podcast</button>
+      <button class="filter-btn" onclick="filterResources('pdf',this)"><i class="fas fa-file-pdf"></i> PDF</button>
+    </div></div>
 
     <!-- Resources -->
     <section class="resources-section">
@@ -629,6 +613,91 @@
                 </a>
             </div>
 
+            <div class="resource-card" data-category="uygulama">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-mobile-screen-button"></i></div><span class="resource-badge">Uygulama</span></div>
+                <h3 class="resource-title">Busuu</h3><p class="resource-desc">Kişiselleştirilmiş dersler ve alıştırmalar.</p>
+                <a href="https://www.busuu.com/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Siteye Git</a>
+            </div>
+            <div class="resource-card" data-category="uygulama">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-mobile-screen-button"></i></div><span class="resource-badge">Uygulama</span></div>
+                <h3 class="resource-title">LingoDeer</h3><p class="resource-desc">Yapılandırılmış, oyunlaştırılmış dil öğrenimi.</p>
+                <a href="https://www.lingodeer.com/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Siteye Git</a>
+            </div>
+            <div class="resource-card" data-category="uygulama">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-comments"></i></div><span class="resource-badge">Uygulama</span></div>
+                <h3 class="resource-title">HelloTalk</h3><p class="resource-desc">Ana dili İspanyolca olan kişilerle mesajlaşma ve konuşma pratiği.</p>
+                <a href="https://www.hellotalk.com/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Siteye Git</a>
+            </div>
+            <!-- BAŞLANGIÇ -->
+            <div class="resource-card" data-category="baslangic">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-seedling"></i></div><span class="resource-badge">Başlangıç</span></div>
+                <h3 class="resource-title">Language Transfer</h3><p class="resource-desc">Mantık odaklı, ücretsiz İspanyolca ders serisi.</p>
+                <a href="https://www.languagetransfer.org/complete-spanish/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Siteye Git</a>
+            </div>
+            <div class="resource-card" data-category="baslangic">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-seedling"></i></div><span class="resource-badge">Başlangıç</span></div>
+                <h3 class="resource-title">StudySpanish.com</h3><p class="resource-desc">Temel gramer, telaffuz ve kelime konularına giriş yapın.</p>
+                <a href="https://studyspanish.com/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Siteye Git</a>
+            </div>
+            <div class="resource-card" data-category="baslangic">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-seedling"></i></div><span class="resource-badge">Başlangıç</span></div>
+                <h3 class="resource-title">Conjuguemos</h3><p class="resource-desc">Fiil çekimleri ve alıştırmalarla tekrar yapın.</p>
+                <a href="https://conjuguemos.com/activities/spanish/verb/1" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Pratik Yap</a>
+            </div>
+            <!-- OKUMA -->
+            <div class="resource-card" data-category="okuma">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-book-open"></i></div><span class="resource-badge">Okuma</span></div>
+                <h3 class="resource-title">Lingofinch</h3><p class="resource-desc">Kısa metinlerle düzenli okuma pratiği yapın.</p>
+                <a href="https://www.lingofinch.com/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Siteye Git</a>
+            </div>
+            <div class="resource-card" data-category="okuma">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-book-open"></i></div><span class="resource-badge">Okuma</span></div>
+                <h3 class="resource-title">Melolingua</h3><p class="resource-desc">A1 düzeyine uygun kısa İspanyolca hikâyeler.</p>
+                <a href="https://melolingua.com/learn-spanish/a1-stories" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Hikâyeleri Aç</a>
+            </div>
+            <div class="resource-card" data-category="okuma">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-book-open"></i></div><span class="resource-badge">Okuma</span></div>
+                <h3 class="resource-title">Fluent With Stories</h3><p class="resource-desc">Seviyeye göre seçilebilen İspanyolca hikâyeler.</p>
+                <a href="https://www.fluentwithstories.com/stories/es?level=A1" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Hikâyeleri Aç</a>
+            </div>
+            <div class="resource-card" data-category="okuma">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-book-open"></i></div><span class="resource-badge">Okuma</span></div>
+                <h3 class="resource-title">Spanish Obsessions</h3><p class="resource-desc">Seviyeli kısa hikâye ve metin kaynakları.</p>
+                <a href="https://spanishobsessions.com/spanish-stories" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Siteye Git</a>
+            </div>
+            <!-- ŞARKILAR -->
+            <div class="resource-card" data-category="sarki">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-spotify"></i></div><span class="resource-badge">Spotify</span></div>
+                <h3 class="resource-title">İspanyolca Şarkı Listesi</h3><p class="resource-desc">Yavaş ve anlaşılır parçalarla dinleme ve kelime pratiği.</p>
+                <a href="https://open.spotify.com/playlist/1fYTKk9zmJ379Ou5f64a4d?si=Hvkav3zOQeKLfBhMdf-fFg&utm_source=copy-link&pi=tKWqrjSIR--1d" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Listeyi Aç</a>
+            </div>
+            <!-- INSTAGRAM -->
+            <div class="resource-card" data-category="instagram">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-instagram"></i></div><span class="resource-badge">Instagram</span></div>
+                <h3 class="resource-title">@spanishwsevval</h3><p class="resource-desc">Sosyal medya akışında İspanyolcaya kulak aşinalığı kazanmak için.</p>
+                <a href="https://www.instagram.com/spanishwsevval/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Profili Aç</a>
+            </div>
+            <div class="resource-card" data-category="instagram">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-instagram"></i></div><span class="resource-badge">Instagram</span></div>
+                <h3 class="resource-title">@ispanyolcadili</h3><p class="resource-desc">Kelime, ifade ve günlük İspanyolca içerikleri.</p>
+                <a href="https://www.instagram.com/ispanyolcadili/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Profili Aç</a>
+            </div>
+            <div class="resource-card" data-category="instagram">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-instagram"></i></div><span class="resource-badge">Instagram</span></div>
+                <h3 class="resource-title">@airlearnnonita</h3><p class="resource-desc">Kısa ve öğretici İspanyolca içerikler.</p>
+                <a href="https://www.instagram.com/airlearnnonita/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Profili Aç</a>
+            </div>
+            <div class="resource-card" data-category="instagram">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-instagram"></i></div><span class="resource-badge">Instagram</span></div>
+                <h3 class="resource-title">@spanish.academyy</h3><p class="resource-desc">Gramer ipuçları ve kısa ders içerikleri.</p>
+                <a href="https://www.instagram.com/spanish.academyy/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Profili Aç</a>
+            </div>
+            <div class="resource-card" data-category="instagram">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-instagram"></i></div><span class="resource-badge">Instagram</span></div>
+                <h3 class="resource-title">@spanishwithpaul</h3><p class="resource-desc">Öğretici videolar ve günlük ifadeler.</p>
+                <a href="https://www.instagram.com/spanishwithpaul/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Profili Aç</a>
+            </div>
+
             <!-- YOUTUBE -->
             <div class="resource-card" data-category="youtube">
                 <div class="resource-header">
@@ -666,6 +735,26 @@
                 </a>
             </div>
 
+            <div class="resource-card" data-category="youtube">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-youtube"></i></div><span class="resource-badge">YouTube</span></div>
+                <h3 class="resource-title">FluentU Spanish</h3><p class="resource-desc">Başlangıç için anlaşılır video temelli dersler.</p>
+                <a href="https://youtube.com/@fluentuspanish" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Kanala Git</a>
+            </div>
+            <div class="resource-card" data-category="youtube">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-youtube"></i></div><span class="resource-badge">YouTube</span></div>
+                <h3 class="resource-title">Spanish After Hours</h3><p class="resource-desc">Yavaş, anlaşılır İspanyolca dinleme içerikleri.</p>
+                <a href="https://youtube.com/@spanishafterhours" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Kanala Git</a>
+            </div>
+            <div class="resource-card" data-category="youtube">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-youtube"></i></div><span class="resource-badge">YouTube</span></div>
+                <h3 class="resource-title">The Language Tutor</h3><p class="resource-desc">Gramer ve temel konular için öğretici dersler.</p>
+                <a href="https://youtube.com/@TheLanguageTutor" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Kanala Git</a>
+            </div>
+            <div class="resource-card" data-category="youtube">
+                <div class="resource-header"><div class="resource-icon"><i class="fab fa-youtube"></i></div><span class="resource-badge">YouTube</span></div>
+                <h3 class="resource-title">Why Not Spanish?</h3><p class="resource-desc">Hikâye tabanlı, anlaşılır İspanyolca videolar.</p>
+                <a href="https://youtube.com/@WhyNotSpanish" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Kanala Git</a>
+            </div>
             <!-- PODCASTLER -->
             <div class="resource-card" data-category="podcast">
                 <div class="resource-header">
@@ -691,6 +780,16 @@
                 </a>
             </div>
 
+            <div class="resource-card" data-category="podcast">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-headphones"></i></div><span class="resource-badge">Dinleme & Podcast</span></div>
+                <h3 class="resource-title">Coffee Break Spanish</h3><p class="resource-desc">Adım adım ilerleyen başlangıç dostu podcast dersleri.</p>
+                <a href="https://coffeebreaklanguages.com/coffeebreakspanish/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Dinle</a>
+            </div>
+            <div class="resource-card" data-category="podcast">
+                <div class="resource-header"><div class="resource-icon"><i class="fas fa-headphones"></i></div><span class="resource-badge">Dinleme & Podcast</span></div>
+                <h3 class="resource-title">SpanishPod101</h3><p class="resource-desc">Kısa dersler ve seviyeye göre dinleme materyalleri.</p>
+                <a href="https://www.spanishpod101.com/" target="_blank" rel="noopener" class="btn-git"><i class="fas fa-arrow-up-right-from-square"></i> Dinle</a>
+            </div>
             <!-- PDF DOSYALAR -->
             <div class="resource-card" data-category="pdf">
                 <div class="resource-header">
